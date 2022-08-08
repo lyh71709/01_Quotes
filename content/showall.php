@@ -52,6 +52,7 @@ do {
 
                     <!-- show subjects -->
                     <span class="tag">
+                        <a href="index.php?page=subject&subjectID=<>">
                         <?php echo $sub_rs['Subject']; ?>
                     </span> &nbsp;
 
