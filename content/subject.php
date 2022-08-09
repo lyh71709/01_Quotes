@@ -1,4 +1,19 @@
-<h2>All Results</h2>
+<?php
+
+if(!isset($_REQUEST['subjectID']))
+{
+    header('Location: index.php');
+}
+
+$subject_to_find = $_REQUEST['subjectID'];
+    // get subject heading
+    $sub_sql = "SELECT * FROM 'subject' WHERE 'Subject_ID' = $subject_to_find";
+    $sub_query = mysqli_query($dbconnect, $sub_sql);
+    $sub_rs = mysqli_fetch_assoc($sub_query);
+
+?>
+
+<h2>Subject Results (<?php echo $sub_rs['subjectID']?>)</h2>
 
 <?php
 
