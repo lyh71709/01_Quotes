@@ -15,7 +15,7 @@ $find_query = mysqli_query($dbconnect, $find_sql);
 $find_rs = mysqli_fetch_assoc($find_query);
 
 $country1 = $find_rs['Country1_ID'];
-$country2 = $find_rs['Counrty2_ID'];
+$country2 = $find_rs['Country2_ID'];
 
 $occupation1 = $find_rs['Career1_ID'];
 $occupation2 = $find_rs['Career2_ID'];
@@ -25,7 +25,7 @@ include("get_author.php");
 
 ?>
 
-<br />>
+<br />
 <div class="about">
     <h2><?php echo $full_name ?> - About</h2>
 
@@ -34,7 +34,13 @@ include("get_author.php");
     <p>
         <?php
         // show countries
-        country_job($dbconnect, $country1, $country2, "Country", "Countries", "country","Country_ID", "Country")
+        country_job($dbconnect, $country1, $country2, "Country", "Countries", "country","Country_ID", "Birth Country")
+        ?>
+    </p>
+    <p>
+        <?php
+        // show careers
+        country_job($dbconnect, $occupation1, $occupation2, "Career", "Careers", "career","Career_ID", "Career")
         ?>
     </p>
 </div> <!-- / about the author div -->
