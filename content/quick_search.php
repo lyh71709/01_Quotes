@@ -1,5 +1,3 @@
-<h2>All Results</h2>
-
 <?php
 
 $quick_find = mysqli_real_escape_string($dbconnect, $_POST['quick_search']);
@@ -30,6 +28,10 @@ OR `Subject3_ID` = $subject_ID
 ";
 $find_query = mysqli_query($dbconnect, $find_sql);
 $find_rs = mysqli_fetch_assoc($find_query);
+$count = mysqli_num_rows($find_query);
+
+if($count > 0) {
+
 
 // Loop through results and display them
 do {
@@ -59,5 +61,21 @@ do {
 } // end of display results 'do'
 
 while($find_rs = mysqli_fetch_assoc($find_query))
+    } // end if results exist if
 
+else {
+    // no results - display error
+
+    ?>
+
+    <h2>Oops!</h2>
+    <div class="error">
+        Sorry - there are no quotes that match the search term <i><b><?php
+        echo $quick_find ?></b></i>. Please try again.
+    </div>
+
+    <p>&nbsp;</p>
+
+    <?php
+}
 ?>
