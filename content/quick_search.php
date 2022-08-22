@@ -30,38 +30,43 @@ $find_query = mysqli_query($dbconnect, $find_sql);
 $find_rs = mysqli_fetch_assoc($find_query);
 $count = mysqli_num_rows($find_query);
 
-if($count > 0) {
+?>
 
-
-// Loop through results and display them
-do {
-
-    $quote = preg_replace('/[^A-Za-z0-9.,\s\'\-]/', ' ', $find_rs['Quote']);
-
-    include("get_author.php");
-
-    ?>
-
-<div class="results">
-    <p>
-        <?php echo $quote; ?><br />
-        <!-- display author name -->
-        <a href="index.php?page=author&authorID=<?php echo $find_rs['AuthorID']; ?>">
-        <?php echo $full_name; ?>
-        </a>
-    </p>
-
-    <?php include("show_subjects.php"); ?>
-
-</div>
-
-<br />
+<h2>Quick Search Results (Search Term: <?php echo $quick_find ?>)</h2>
 
 <?php
-} // end of display results 'do'
 
-while($find_rs = mysqli_fetch_assoc($find_query))
-    } // end if results exist if
+if($count > 0) {
+
+    // Loop through results and display them
+    do {
+
+        $quote = preg_replace('/[^A-Za-z0-9.,\s\'\-]/', ' ', $find_rs['Quote']);
+
+        include("get_author.php");
+
+        ?>
+
+    <div class="results">
+        <p>
+            <?php echo $quote; ?><br />
+            <!-- display author name -->
+            <a href="index.php?page=author&authorID=<?php echo $find_rs['AuthorID']; ?>">
+            <?php echo $full_name; ?>
+            </a>
+        </p>
+
+        <?php include("show_subjects.php"); ?>
+
+    </div>
+
+    <br />
+
+    <?php
+    } // end of display results 'do'
+
+    while($find_rs = mysqli_fetch_assoc($find_query));
+} // end if results exist if
 
 else {
     // no results - display error
