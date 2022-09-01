@@ -29,7 +29,25 @@
             </div>  <!-- / top search -->
             
             <div class="topadmin">
-                <a href="#">Log In</a>
+                
+                <?php
+                    if (isset($_SESSION['admin'])) {
+                        ?>
+
+                        <a href="index.php?page=../admin/newquote"><i class="fa fa-plus fa-2x"></i></a> 
+                        
+                        &nbsp; &nbsp;
+
+                        <a href="index.php?page=../admin/logout"><i class="fa fa=sign-in fa-2x"></i></a>
+
+                        <?php
+                    } // end user logged in if
+                    else {
+                        ?>
+                        <a href="index.php?page=../admin/login">Login</a>
+                        <?php
+                    } // end of login else
+                ?>
                 
             </div>  <!-- / top admin -->
             
