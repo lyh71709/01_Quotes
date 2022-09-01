@@ -1,7 +1,7 @@
 <form action="index.php?page=../admin/adminlogin" method="post">
 
     <p>Username: <input name="username" /></p>
-    <p>Username: <input name="username" type="password" /></p>
+    <p>Password: <input name="password" type="password" /></p>
 
     <?php
 if(isset($_GET['error'])) {

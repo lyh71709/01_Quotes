@@ -3,7 +3,7 @@
 if (isset($_REQUEST['login'])) {
 
     // get username from form
-    $username = $REQUEST['username'];
+    $username = $_REQUEST['username'];
 
     $options = ['cost' => 9,];
 
@@ -13,7 +13,7 @@ if (isset($_REQUEST['login'])) {
     $login_rs=mysqli_fetch_assoc($login_query);
 
     // Hash password and compare with password in database
-    if (password_verify($_REQUEST['password'], $login_rs['password'])) {
+    if (password_verify($_REQUEST['password'] , $login_rs['password'])) {
 
         // password matches
         echo 'Password is valid!';
@@ -25,6 +25,7 @@ if (isset($_REQUEST['login'])) {
     else {
 
         echo 'Invalid password.';
+        echo $login_rs['password'];
         unset($_SESSION);
         $login_error = "Incorrect username / password";
         header("Location: index.php?page=../admin/login&error=$login_error");
