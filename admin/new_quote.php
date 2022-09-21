@@ -55,7 +55,7 @@ else {
 
                 ?>
 
-                <option value="<?php echo $all_authors_rs['Author_ID']; ?>">
+                <option value="<?php echo $all_authors_rs['AuthorID']; ?>">
                     <?php echo $author_full; ?>
                 </option>
 
