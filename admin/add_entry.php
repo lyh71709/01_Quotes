@@ -33,6 +33,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // get data from form
     $quote = mysqli_real_escape_string($dbconnect, $_POST['quote']);
     $notes = mysqli_real_escape_string($dbconnect, $_POST['notes']);
+    $tag_1 = mysqli_real_escape_string($dbconnect, $_POST['Subject_1']);
+    $tag_2 = mysqli_real_escape_string($dbconnect, $_POST['Subject_2']);
+    $tag_3 = mysqli_real_escape_string($dbconnect, $_POST['Subject_3']);
 
     // check data is valid
 
@@ -49,6 +52,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tag_1_error = "error-text";
         $tag_1_field = "tag-error";
     }
+
+    if($has_errors != "yes") {
+
+        // Get subject ID's via get_ID function...
+        $subjectID_1 = get_ID($dbconnect, 'subject', 'Subject_ID', 'Subject', $tag_1);
+        $subjectID_2 = get_ID($dbconnect, 'subject', 'Subject_ID', 'Subject', $tag_2);
+        $subjectID_3 = get_ID($dbconnect, 'subject', 'Subject_ID', 'Subject', $tag_3);
+
+        // add entry to database
+        $addentry_sql = "INSERT INTO `quotes` (`ID`, `AuthorID`, `Quote`, `Notes`, `Subject1_ID`, `Subject2_ID`, `Subject3_ID`) VALUES (NULL, '1', 'This is a test quote', '', '1', '2', '3');
+        ";
+        $addentry_query = mysqli_query($dbconnect, $addentry_sql);
+
+    } // end add entry to database if
+
 }
 
 } // end user logged in if
@@ -85,6 +103,20 @@ else {
         <input class="<?php echo $tag_1_field; ?>" id="subject1" type="text" name="Subject_1" placeholder="Subject 1(Start Typing)...">
     </div>
 
+    <br/><br />
+
+    <div class="autocomplete">
+        <input id="subject2" type="text" name="Subject_2" placeholder="Subject 2 (Start Typing, optional)...">
+    </div>
+
+    <br/><br />
+
+    <div class="autocomplete">
+        <input id="subject3" type="text" name="Subject_3" placeholder="Subject 3 (Start Typing, optional)...">
+    </div>
+
+    <br/><br />
+
     <!-- Submit Button -->
     <p>
         <input type="submit" value="Submit" />
@@ -99,4 +131,6 @@ else {
     /* Arrays containing lists. */
     var all_tags = <?php print("$all_subjects"); ?>;
     autocomplete(document.getElementById("subject1"), all_tags);
+    autocomplete(document.getElementById("subject2"), all_tags);
+    autocomplete(document.getElementById("subject3"), all_tags);
 </script>
