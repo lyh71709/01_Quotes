@@ -3,19 +3,44 @@
 // check user is logged in...
 if (isset($_SESSION['admin'])) {
     
-    $author_ID = $_SESSION['Add_Quote'];
-    echo "AuthorID: ".$author_ID;
+    $ID = $_REQUEST['ID'];
+    echo "Author ID:".$ID;
+
+    // Get author ID
+    $find_sql = "SELECT * FROM quotes JOIN author ON (`author`.`Author_ID`=`quotes`.`Author_ID`) WHERE `quotes`.`ID`=$ID";
+    $find_query = mysqli_query($dbconnect, $find_sql);
+    $find_rs = mysqli_fetch_assoc($find_query);
+
+    $author_ID = $find_rs['Author_ID'];
+    $first = $find_rs['First'];
+    $middle = $find_rs['Middle'];
+    $last = $find_rs['Last'];
+
+    $current_author = $last.", ".$first." ".$middle;
 
     // Get subjects / topic list from database
     $all_tags_sql = "SELECT * FROM `subject` ORDER BY `Subject` ASC ";
     $all_subjects = autocomplete_list($dbconnect, $all_tags_sql, 'Subject');
 
     // initialise form variable for quote
-    $quote = "Please type your quote here";
-    $notes = "";
-    $tag_1 = "";
-    $tag_2 = "";
-    $tag_3 = "";
+    $quote = $find_quote_rs['Quote'];
+    $notes = $find_quote_rs['Notes'];
+
+    // Get subjects to populate tags
+    $subject1_ID = $find_quote_rs['Subejct1_ID'];
+    $subject2_ID = $find_quote_rs['Subejct2_ID'];
+    $subject3_ID = $find_quote_rs['Subejct3_ID'];
+
+    // retrieve subject names from subject table
+    $tag_1_rs = get_rs($dbconnect, "SELECT * FROM `subject` WHERE Subject_ID = $subject1_ID");
+    $tag_1 = $tag_1_rs['Subject'];
+
+    $tag_2_rs = get_rs($dbconnect, "SELECT * FROM `subject` WHERE Subject_ID = $subject2_ID");
+    $tag_2 = $tag_2_rs['Subject'];
+
+    $tag_3_rs = get_rs($dbconnect, "SELECT * FROM `subject` WHERE Subject_ID = $subject3_ID");
+    $tag_3 = $tag_3_rs['Subject'];
+
 
     // initialise tag ID's
     $tag_1_ID = $tag_2_ID = $tag_3_ID = 0;
@@ -89,9 +114,35 @@ else {
 
 ?>
 
-<h1> Add Quote... </h1>
+<h1> Edit Quote... </h1>
 
-<form autocomplete="off" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]."?page=../admin/add_entry"); ?>" enctype="multipart/form-data">
+<form autocomplete="off" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]."?page=../admin/editquote&ID"); ?>" enctype="multipart/form-data">
+
+    <b>Quote Author: </b> &nbsp;
+
+    <select name="author">
+        <!-- Default option is the new author -->
+        <option value="<?php echo $author_ID; ?>" selected><?php echo $current_author ?></option>
+
+        <?php
+
+        do {
+
+            ?>
+
+            <option value="<?php echo $author_ID; ?>">
+                <?php echo $author_full; ?>
+            </option>
+
+            <?php
+
+        } // end of author options 'do'
+
+        while($all_authors_rs=mysqli_fetch_assoc($all_authors_query))
+
+        ?>
+
+    </select>
 
     <!-- Quote text area -->
     <div class="<?php echo $quote_error; ?>">
