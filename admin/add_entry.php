@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // check data is valid
 
     // check quote is not blank
-    if ($quote == "Please type your quote here") {
+    if ($quote == "Please type your quote here" or $quote == "") {
         $has_errors = "yes";
         $quote_error = "error-text";
         $quote_field = "form-error";
