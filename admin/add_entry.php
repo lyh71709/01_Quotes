@@ -110,19 +110,19 @@ else {
     </div>
 
     <div class="autocomplete">
-        <input class="<?php echo $tag_1_field; ?>" id="subject1" type="text" name="Subject_1" value="<?php echo $tag_1 ?>" placeholder="Subject 1(Start Typing)...">
+        <input class=" add-field <?php echo $tag_1_field; ?>" id="subject1" type="text" name="Subject_1" value="<?php echo $tag_1 ?>" placeholder="Subject 1(Start Typing)...">
     </div>
 
     <br/><br />
 
     <div class="autocomplete">
-        <input id="subject2" type="text" name="Subject_2" value="<?php echo $tag_2 ?>" placeholder="Subject 2 (Start Typing, optional)...">
+        <input class="add-field" id="subject2" type="text" name="Subject_2" value="<?php echo $tag_2 ?>" placeholder="Subject 2 (Start Typing, optional)...">
     </div>
 
     <br/><br />
 
     <div class="autocomplete">
-        <input id="subject3" type="text" name="Subject_3" value="<?php echo $tag_3 ?>" placeholder="Subject 3 (Start Typing, optional)...">
+        <input class="add-field" id="subject3" type="text" name="Subject_3" value="<?php echo $tag_3 ?>" placeholder="Subject 3 (Start Typing, optional)...">
     </div>
 
     <br/><br />

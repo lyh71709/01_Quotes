@@ -7,7 +7,7 @@ if (isset($_SESSION['admin'])) {
     echo "Author ID:".$ID;
 
     // Get author ID
-    $find_sql = "SELECT * FROM quotes JOIN author ON (`author`.`Author_ID`=`quotes`.`Author_ID`) WHERE `quotes`.`ID`=$ID";
+    $find_sql = "SELECT * FROM quotes JOIN author ON (`author`.`Author_ID`=`quotes`.`Author_ID`) WHERE `quotes`.`ID`= $ID";
     $find_query = mysqli_query($dbconnect, $find_sql);
     $find_rs = mysqli_fetch_assoc($find_query);
 
@@ -23,13 +23,13 @@ if (isset($_SESSION['admin'])) {
     $all_subjects = autocomplete_list($dbconnect, $all_tags_sql, 'Subject');
 
     // initialise form variable for quote
-    $quote = $find_quote_rs['Quote'];
-    $notes = $find_quote_rs['Notes'];
+    $quote = $find_rs['Quote'];
+    $notes = $find_rs['Notes'];
 
     // Get subjects to populate tags
-    $subject1_ID = $find_quote_rs['Subejct1_ID'];
-    $subject2_ID = $find_quote_rs['Subejct2_ID'];
-    $subject3_ID = $find_quote_rs['Subejct3_ID'];
+    $subject1_ID = $find_rs['Subejct1_ID'];
+    $subject2_ID = $find_rs['Subejct2_ID'];
+    $subject3_ID = $find_rs['Subejct3_ID'];
 
     // retrieve subject names from subject table
     $tag_1_rs = get_rs($dbconnect, "SELECT * FROM `subject` WHERE Subject_ID = $subject1_ID");
@@ -56,6 +56,7 @@ if (isset($_SESSION['admin'])) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // get data from form
+    $author_ID = mysqli_real_escape_string($dbconnect, $_POST['author']);
     $quote = mysqli_real_escape_string($dbconnect, $_POST['quote']);
     $notes = mysqli_real_escape_string($dbconnect, $_POST['notes']);
     $tag_1 = mysqli_real_escape_string($dbconnect, $_POST['Subject_1']);
@@ -85,9 +86,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $subjectID_2 = get_ID($dbconnect, 'subject', 'Subject_ID', 'Subject', $tag_2);
         $subjectID_3 = get_ID($dbconnect, 'subject', 'Subject_ID', 'Subject', $tag_3);
 
-        // add entry to database
-        $addentry_sql = "INSERT INTO `quotes` (`ID`, `AuthorID`, `Quote`, `Notes`, `Subject1_ID`, `Subject2_ID`, `Subject3_ID`) VALUES (NULL, '$author_ID', '$quote', '$notes', '$subjectID_1', '$subjectID_2', '$subjectID_3');";
-        $addentry_query = mysqli_query($dbconnect, $addentry_sql);
+        // edit database entry
+        $editentry_sql = "UPDATE `quotes` SET `AuthorID` = '$author_ID', `Quote` = '$quote', `Notes` = '$notes', `Subject1_ID` = '$subject1_ID', `Subject2_ID` = '$subject2_ID', `Subject3_ID` = '$subject3_ID' WHERE `quotes`.`ID` = $ID;";
+        $editentry_query = mysqli_query($dbconnect, $editentry_sql);
 
         // get quote ID for next page
         $get_quote_sql = "SELECT * FROM `quotes` WHERE `Quote` = '$quote'";
@@ -95,10 +96,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $get_quote_rs = mysqli_fetch_assoc($get_quote_query);
 
         $quote_ID = $get_quote_rs['ID'];
-        $_SESSION['Quote_Success'] = $quote_ID;
 
         // Go to success page
-        header('Location: index.php?page=quote_success');
+        header('Location: index.php?page=editquote_success&quote_ID='.$quote_ID);
 
     } // end add entry to database if
 
@@ -118,15 +118,25 @@ else {
 
 <form autocomplete="off" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]."?page=../admin/editquote&ID"); ?>" enctype="multipart/form-data">
 
-    <b>Quote Author: </b> &nbsp;
-
-    <select name="author">
+    <select class="adv gender" name="author">
         <!-- Default option is the new author -->
         <option value="<?php echo $author_ID; ?>" selected><?php echo $current_author ?></option>
 
         <?php
 
+        // get authors from database
+        $all_authors_sql = "SELECT * FROM `author` ORDER BY `Last` ASC ";
+        $all_authors_query = mysqli_query($dbconnect, $all_authors_sql);
+        $all_authors_rs = mysqli_fetch_assoc($all_authors_query);
+
         do {
+
+            $author_ID = $all_author_rs['Author_ID'];
+            $first = $all_authors_rs['First'];
+            $middle = $all_authors_rs['Middle'];
+            $last = $all_authors_rs['Last'];
+
+            $author_full = $last.", ".$first." ".$middle;
 
             ?>
 
@@ -161,19 +171,19 @@ else {
     </div>
 
     <div class="autocomplete">
-        <input class="<?php echo $tag_1_field; ?>" id="subject1" type="text" name="Subject_1" value="<?php echo $tag_1 ?>" placeholder="Subject 1(Start Typing)...">
+        <input class="add-field <?php echo $tag_1_field; ?>" id="subject1" type="text" name="Subject_1" value="<?php echo $tag_1 ?>" placeholder="Subject 1(Start Typing)...">
     </div>
 
     <br/><br />
 
     <div class="autocomplete">
-        <input id="subject2" type="text" name="Subject_2" value="<?php echo $tag_2 ?>" placeholder="Subject 2 (Start Typing, optional)...">
+        <input class="add-field" id="subject2" type="text" name="Subject_2" value="<?php echo $tag_2 ?>" placeholder="Subject 2 (Start Typing, optional)...">
     </div>
 
     <br/><br />
 
     <div class="autocomplete">
-        <input id="subject3" type="text" name="Subject_3" value="<?php echo $tag_3 ?>" placeholder="Subject 3 (Start Typing, optional)...">
+        <input class="add-field" id="subject3" type="text" name="Subject_3" value="<?php echo $tag_3 ?>" placeholder="Subject 3 (Start Typing, optional)...">
     </div>
 
     <br/><br />
