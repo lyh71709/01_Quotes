@@ -7,11 +7,11 @@ if (isset($_SESSION['admin'])) {
     echo "Author ID:".$ID;
 
     // Get author ID
-    $find_sql = "SELECT * FROM quotes JOIN author ON (`author`.`Author_ID`=`quotes`.`Author_ID`) WHERE `quotes`.`ID`= $ID";
+    $find_sql = "SELECT * FROM quotes JOIN author ON (`author`.`AuthorID`=`quotes`.`AuthorID`) WHERE `quotes`.`ID`= $ID";
     $find_query = mysqli_query($dbconnect, $find_sql);
     $find_rs = mysqli_fetch_assoc($find_query);
 
-    $author_ID = $find_rs['Author_ID'];
+    $author_ID = $find_rs['AuthorID'];
     $first = $find_rs['First'];
     $middle = $find_rs['Middle'];
     $last = $find_rs['Last'];
@@ -27,9 +27,9 @@ if (isset($_SESSION['admin'])) {
     $notes = $find_rs['Notes'];
 
     // Get subjects to populate tags
-    $subject1_ID = $find_rs['Subejct1_ID'];
-    $subject2_ID = $find_rs['Subejct2_ID'];
-    $subject3_ID = $find_rs['Subejct3_ID'];
+    $subject1_ID = $find_rs['Subject1_ID'];
+    $subject2_ID = $find_rs['Subject2_ID'];
+    $subject3_ID = $find_rs['Subject3_ID'];
 
     // retrieve subject names from subject table
     $tag_1_rs = get_rs($dbconnect, "SELECT * FROM `subject` WHERE Subject_ID = $subject1_ID");

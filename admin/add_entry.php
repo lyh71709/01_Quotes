@@ -110,7 +110,7 @@ else {
     </div>
 
     <div class="autocomplete">
-        <input class=" add-field <?php echo $tag_1_field; ?>" id="subject1" type="text" name="Subject_1" value="<?php echo $tag_1 ?>" placeholder="Subject 1(Start Typing)...">
+        <input class="add-field <?php echo $tag_1_field; ?>" id="subject1" type="text" name="Subject_1" value="<?php echo $tag_1 ?>" placeholder="Subject 1(Start Typing)...">
     </div>
 
     <br/><br />

@@ -35,7 +35,7 @@ else {
 
 <h1>Add a Quote</h1>
 <p><i>
-    To add a quote, first select the author, then press the 'next' button. If the author is not in the list, please choose the 'New Author' option. To quickly find and author, click in the box below and start typing their <b>last</b> name.
+    To add a quote, first select the author, then press the 'next' button. To quickly find and author, click in the box below and start typing their <b>last</b> name.
 </i></p>
 
 <form method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]."?page=../admin/new_quote");?>">
